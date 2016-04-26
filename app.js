@@ -12,11 +12,12 @@ app.use('/special', function(request, response, next) {
 	next();
 });
 
+
 app.get('/', function(request, response) {
 	response.send('hello world');
 });
 
-//test
+
 var server = app.listen(3000, function() {
 	console.log('server started');
 });
