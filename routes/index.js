@@ -12,7 +12,7 @@ router.get('/', function (req, res) {
 router.get('/users/:name', function(req, res, next) {
 	var name = req.params.name;
 	var tweets = bank.find(['name', name]);
-	res.render('index', {title: 'The Real Twitter', tweets: tweets});
+	res.render('index', {title: 'The Real Twitter', name: name, showForm: true, tweets: tweets});
 })
 
 router.get('/tweets/:id', function(req, res, next) {
@@ -25,6 +25,7 @@ router.get('/tweets/:id', function(req, res, next) {
 router.post('/tweets', function(req, res) {
 	var name = req.body.name;
 	var text = req.body.text;
+	tweetBank.add(name, text);
 	res.redirect('/');
 })
 // router.get('/stylesheets/style.css', function(req, res) {
