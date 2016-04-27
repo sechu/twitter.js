@@ -1,8 +1,11 @@
+
+
 var express = require('express');
 var router = express.Router();
 var bank = require('../tweetBank');
 var path = require('path');
 
+module.exports = function(io) {
 
 router.get('/', function (req, res) {
 	var tweets = bank.list();
@@ -25,11 +28,11 @@ router.get('/tweets/:id', function(req, res, next) {
 router.post('/tweets', function(req, res) {
 	var name = req.body.name;
 	var text = req.body.text;
-	tweetBank.add(name, text);
+	bank.add(name, text);
+	var id = bank.find({name: name, text: text})[0].id;
+	io.sockets.emit('new_tweet', {name: name, text: text, id: id});
 	res.redirect('/');
 })
-// router.get('/stylesheets/style.css', function(req, res) {
-// 	res.sendFile(path.join(__dirname, '../public/stylesheets/style.css'));
-// })
 
-module.exports = router;
+	return router;
+};

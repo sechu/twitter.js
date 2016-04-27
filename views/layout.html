@@ -79,4 +79,22 @@
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
   </body>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io.connect();
+    socket.on('connect', function() {
+      console.log('connected to server via Websockets');
+    });
+    socket.on('new_tweet', function(tweet) {
+      console.log(tweet);
+      var firstTweet = document.getElementsByClassName("tweet")[0];
+      var newTweet = firstTweet.cloneNode(true);
+      var modArray = newTweet.getElementsByTagName("a");
+      modArray[0].setAttribute("href", "/users/"+tweet.name);
+      modArray[0].firstChild.innerHTML=tweet.name;
+      modArray[1].setAttribute("href", "/users/"+tweet.id);
+      modArray[1].innerHTML=tweet.text;
+      firstTweet.parentNode.appendChild(newTweet);
+    });
+    </script>
 </html>

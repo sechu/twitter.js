@@ -4,6 +4,7 @@ var swig = require('swig');
 var bank = require('./tweetBank');
 var routes = require('./routes/');
 var parser = require('body-parser');
+var socketio = require('socket.io');
 swig.setDefaults({cache: false});
 
 
@@ -19,7 +20,12 @@ app.use(function(request, response, next) {
 	next();
 });
 
-app.use('/', routes);
+var server = app.listen(3000, function() {
+	console.log('server started: listening');
+});
+var io = socketio.listen(server);
+
+app.use('/', routes(io));
 app.use(express.static('public'));
 
 // app.post('/tweets', function(request, response) {
@@ -29,8 +35,5 @@ app.use(express.static('public'));
 // });
 
 
-var server = app.listen(3000, function() {
-	console.log('server started: listening');
-});
 
 
